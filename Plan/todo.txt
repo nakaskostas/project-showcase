@@ -1,0 +1,11 @@
+- Learning από δημόσια έργα (feed llm)
+
+- .env αρχείο -> GEMINI_API_KEY="YOUR_REAL_KEY", στο gitignore βάζω απλά  /.env
+https://aistudio.google.com/app/apikey 
+
+
+
+
+
+
+
