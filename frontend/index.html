@@ -1,21 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="el">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Epirus Showcase Agent</title>
-    <link rel="stylesheet" href="/frontend/style.css">
+    <title>Epirus Showcase Agent - Δημιουργία Παρουσίασης</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <h1>Epirus Showcase Agent</h1>
-        <p>Enter the full path to the project folder to generate a presentation.</p>
-        <form id="presentation-form">
-            <input type="text" id="folder-path" placeholder="e.g., C:\Users\YourUser\Documents\MyProject" required>
-            <button type="submit">Generate Presentation</button>
-        </form>
-        <div id="status-message"></div>
+        <header class="app-header">
+            <h1>Epirus Showcase Agent</h1>
+            <p class="tagline">Αυτόματη δημιουργία παρουσιάσεων για τα έργα της Περιφέρειας Ηπείρου</p>
+        </header>
+
+        <main>
+            <div class="form-container">
+                <h2>Ξεκινήστε εδώ</h2>
+                <p>Εισάγετε την πλήρη διαδρομή του φακέλου που περιέχει τα αρχεία του έργου και πατήστε "Δημιουργία" για να ξεκινήσει η διαδικασία.</p>
+                
+                <form id="presentation-form">
+                    <div class="input-group">
+                        <label for="folder-path">Διαδρομή Φακέλου Έργου</label>
+                        <input type="text" id="folder-path" name="folder-path" placeholder="π.χ., C:\Users\MyUser\Documents\ProjectFolder" required>
+                    </div>
+                    <button type="submit" class="cta-button">Δημιουργία Παρουσίασης</button>
+                </form>
+
+                <div id="loading-spinner" class="loading-spinner" style="display: none;"></div>
+                <div id="status-message" class="status-message"></div>
+                <div id="result-container" class="result-container" style="margin-top: 20px;"></div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Περιφέρεια Ηπείρου</p>
+        </footer>
     </div>
-    <script src="/frontend/script.js"></script>
+
+    <script src="script.js"></script>
 </body>
 </html>
