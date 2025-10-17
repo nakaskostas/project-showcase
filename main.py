@@ -1,12 +1,12 @@
 import os
-import fitz  # PyMuPDF
-import docx
 import google.generativeai as genai
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
 from dotenv import load_dotenv
 from pydantic import BaseModel
+
+# Import the new processors
+from src.processors import text_processor, spreadsheet_processor
 
 # Load environment variables from .env file
 load_dotenv()
@@ -15,8 +15,6 @@ load_dotenv()
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 app = FastAPI()
-
-
 
 
 class PresentationRequest(BaseModel):
@@ -43,9 +41,9 @@ def generate_html_from_summary(summary_path: str, output_folder: str) -> str | N
         summary_content = f.read()
 
     print("Sending summary to Gemini for HTML generation...")
-    model = genai.GenerativeModel('gemini-2.5-pro')
+    model = genai.GenerativeModel('gemini-1.5-pro')
 
-    prompt = """You are a code generator. Based on the following Markdown summary, generate a complete, single-page, responsive HTML presentation.
+    prompt = '''You are a code generator. Based on the following Markdown summary, generate a complete, single-page, responsive HTML presentation.
 Your response MUST consist of two parts:
 1. The HTML code, enclosed in a ```html ... ``` block.
 2. The CSS code, enclosed in a ```css ... ``` block.
@@ -64,7 +62,7 @@ The CSS should be modern and ensure the page is responsive.
 
 Here is the Markdown content:
 ---
-""" + summary_content
+''' + summary_content
 
     try:
         response = model.generate_content(prompt)
@@ -134,13 +132,14 @@ Here is the Markdown content:
         print(f"An error occurred while generating the HTML: {e}")
         return None
 
+
 def generate_summary_with_gemini(content: str, output_folder: str) -> str | None:
     """
     Uses the Gemini API to generate a summary and then triggers HTML generation.
     Returns the path to the generated HTML file.
     """
     print("Sending content to Gemini for summarization...")
-    model = genai.GenerativeModel('gemini-2.5-pro')
+    model = genai.GenerativeModel('gemini-1.5-pro')
     
     prompt = f"""Based on the following text extracted from various project documents, create a comprehensive and well-structured summary in Markdown format. 
 The summary should identify and highlight key information such as: Project Title, Budget, Timeline, Key Stakeholders, Objectives, and a general Technical Description. 
@@ -167,42 +166,6 @@ Structure the output with clear headings and bullet points. The file should be n
         return None
 
 
-def read_file_content(file_path: str) -> str | None:
-    """
-    Reads the content of a file based on its extension.
-    Currently supports: .txt, .md, .pdf, .docx
-    """
-    _, extension = os.path.splitext(file_path)
-    extension = extension.lower()
-
-    if extension in [".txt", ".md"]:
-        with open(file_path, "r", encoding="utf-8") as f:
-            return f.read()
-    elif extension == ".pdf":
-        try:
-            doc = fitz.open(file_path)
-            text = ""
-            for page in doc:
-                text += page.get_text()
-            return text
-        except Exception as e:
-            print(f"Error reading PDF {file_path}: {e}")
-            return None
-    elif extension == ".docx":
-        try:
-            doc = docx.Document(file_path)
-            text = ""
-            for para in doc.paragraphs:
-                text += para.text + "\n"
-            return text
-        except Exception as e:
-            print(f"Error reading DOCX {file_path}: {e}")
-            return None
-    else:
-        print(f"Skipping unsupported file type: {file_path}")
-        return None
-
-
 def cleanup_old_files(output_folder: str):
     """Deletes old generated files to ensure a clean slate."""
     files_to_delete = ["summary.md", "presentation.html", "presentation.css"]
@@ -222,15 +185,29 @@ def process_folder(folder_path: str) -> str | None:
     print(f"Starting to process folder: {folder_path}")
     all_content = []
 
+    # Define supported extensions for each processor
+    text_extensions = [".txt", ".md", ".pdf", ".docx"]
+    spreadsheet_extensions = [".xlsx"]
+
     for root, _, files in os.walk(folder_path):
         for file in files:
             file_path = os.path.join(root, file)
-            content = read_file_content(file_path)
+            _, extension = os.path.splitext(file_path)
+            extension = extension.lower()
+
+            content = ""
+            if extension in text_extensions:
+                content = text_processor.process(file_path)
+            elif extension in spreadsheet_extensions:
+                content = spreadsheet_processor.process(file_path)
+            else:
+                print(f"Skipping unsupported file type: {file_path}")
+
             if content:
                 all_content.append(f"--- Content from {file} ---\n{content}")
 
     if not all_content:
-        print("No supported files (.txt, .md, .pdf, .docx) found in the provided folder.")
+        print("No supported files found in the provided folder.")
         return None
 
     print(f"Found and read {len(all_content)} supported files.")
@@ -254,7 +231,7 @@ async def create_presentation(request: PresentationRequest):
     if presentation_url:
         return {"status": "Processing finished.", "presentation_url": presentation_url}
     else:
-        return {"error": "Failed to generate presentation."}, 500
+        return {"error": "Failed to generate presentation."},
 
 
 # According to tech_stack.txt, we will use uvicorn to run this.
