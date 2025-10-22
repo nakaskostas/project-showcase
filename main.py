@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from pydantic import BaseModel
 
 # Import the new processors
-from src.processors import text_processor, spreadsheet_processor
+from src.processors import text_processor, spreadsheet_processor, image_processor, video_processor
 
 # Load environment variables from .env file
 load_dotenv()
@@ -88,14 +88,14 @@ Here is the Markdown content:
 
         # Fallback for cases where the model might not generate the ```html part
         if not html_code and (css_start != -1):
-             # Assume HTML is everything before the CSS block
-             potential_html = full_response_text[:css_start].strip()
-             # Clean up potential markdown/code fences
-             if potential_html.startswith("```"):
-                 potential_html = potential_html[3:]
-             if potential_html.endswith("```"):
-                 potential_html = potential_html[:-3]
-             html_code = potential_html.strip()
+            # Assume HTML is everything before the CSS block
+            potential_html = full_response_text[:css_start].strip()
+            # Clean up potential markdown/code fences
+            if potential_html.startswith("```"):
+                potential_html = potential_html[3:]
+            if potential_html.endswith("```"):
+                potential_html = potential_html[:-3]
+            html_code = potential_html.strip()
 
 
         if not html_code and not css_code:
@@ -133,25 +133,29 @@ Here is the Markdown content:
         return None
 
 
-def generate_summary_with_gemini(content: str, output_folder: str) -> str | None:
+def generate_summary_with_gemini(content: str, image_parts: list, output_folder: str) -> str | None:
     """
-    Uses the Gemini API to generate a summary and then triggers HTML generation.
+    Uses the Gemini API to generate a summary from text and images, then triggers HTML generation.
     Returns the path to the generated HTML file.
     """
-    print("Sending content to Gemini for summarization...")
-    model = genai.GenerativeModel('gemini-1.5-pro')
-    
-    prompt = f"""Based on the following text extracted from various project documents, create a comprehensive and well-structured summary in Markdown format. 
+    print("Sending content and images to Gemini for summarization...")
+    model = genai.GenerativeModel('models/gemini-2.5-flash-image')
+
+    # Combine text and image parts for the prompt
+    prompt_parts = [f"""Based on the following text and images extracted from various project documents, 
+create a comprehensive and well-structured summary in Markdown format. 
 The summary should identify and highlight key information such as: Project Title, Budget, Timeline, Key Stakeholders, Objectives, and a general Technical Description. 
+Analyze the images to extract visual information like construction status, architectural plans, or location context.
 Structure the output with clear headings and bullet points. The file should be named 'summary.md'.
 
 ---
 
 {content}
-"""
+"""]
+    prompt_parts.extend(image_parts)
 
     try:
-        response = model.generate_content(prompt)
+        response = model.generate_content(prompt_parts)
         summary = response.text
         
         summary_path = os.path.join(output_folder, "summary.md")
@@ -184,10 +188,14 @@ def process_folder(folder_path: str) -> str | None:
     """
     print(f"Starting to process folder: {folder_path}")
     all_content = []
+    image_parts = []
+    video_frames_count = 0
 
     # Define supported extensions for each processor
     text_extensions = [".txt", ".md", ".pdf", ".docx"]
     spreadsheet_extensions = [".xlsx"]
+    image_extensions = [".jpg", ".jpeg", ".png"]
+    video_extensions = [".mp4", ".mov", ".avi"]
 
     for root, _, files in os.walk(folder_path):
         for file in files:
@@ -195,26 +203,43 @@ def process_folder(folder_path: str) -> str | None:
             _, extension = os.path.splitext(file_path)
             extension = extension.lower()
 
-            content = ""
             if extension in text_extensions:
                 content = text_processor.process(file_path)
+                if content:
+                    all_content.append(f"--- Content from {file} ---\n{content}")
             elif extension in spreadsheet_extensions:
                 content = spreadsheet_processor.process(file_path)
+                if content:
+                    all_content.append(f"--- Content from {file} ---\n{content}")
+            elif extension in image_extensions:
+                image_data = image_processor.process(file_path)
+                if image_data:
+                    image_parts.append(f"--- Image from {file} ---")
+                    image_parts.extend(image_data)
+            elif extension in video_extensions:
+                video_frames = video_processor.process(file_path)
+                if video_frames:
+                    image_parts.append(f"--- Video frames from {file} ---")
+                    image_parts.extend(video_frames)
+                    video_frames_count += len(video_frames)
             else:
                 print(f"Skipping unsupported file type: {file_path}")
 
-            if content:
-                all_content.append(f"--- Content from {file} ---\n{content}")
-
-    if not all_content:
+    if not all_content and not image_parts:
         print("No supported files found in the provided folder.")
         return None
 
-    print(f"Found and read {len(all_content)} supported files.")
+    # Each image adds a text part and a data dict. Each video frame is just a data dict.
+    # The logic for counting images needs to be adjusted.
+    # Let's count the number of "---" separators to get the number of files.
+    file_marker_count = sum(1 for item in image_parts if isinstance(item, str))
+    image_count = file_marker_count - (1 if video_frames_count > 0 else 0)
+
+    print(f"Found and read {len(all_content)} text-based files, {image_count} images, and processed {video_frames_count} frames from videos.")
     combined_content = "\n\n".join(all_content)
 
     output_folder = "frontend"
-    return generate_summary_with_gemini(combined_content, output_folder)
+    return generate_summary_with_gemini(combined_content, image_parts, output_folder)
 
 
 @app.post("/create-presentation")
