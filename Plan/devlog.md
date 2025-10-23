@@ -49,3 +49,12 @@ This log tracks the development process of the Epirus Showcase Agent. The agent 
     - The function is prompted to create a modern, responsive design and to provide the HTML and CSS code separately.
     - The application now saves `index.html` and `style.css` to the project folder, completing the core backend pipeline.
 - **Next Step:** Develop the frontend user interface to allow users to easily interact with the backend API.
+
+## 2025-10-23
+
+- **Action:** Added support for presentation files.
+- **Details:**
+    - Created `src/processors/presentation_processor.py` to handle `.pptx` files.
+    - Installed `python-pptx` and added it to `requirements.txt`.
+    - Integrated the new processor into `main.py`.
+- **Next Step:** Continue with frontend development.
