@@ -1,37 +1,36 @@
+import google.generativeai as genai
+import PIL.Image
+from typing import Dict
 
-import base64
-from typing import List, Dict, Union
-
-def process(file_path: str) -> List[Dict[str, Union[str, Dict]]]:
+def process(file_path: str) -> Dict[str, str]:
     """
-    Processes an image file by reading it and encoding it in base64.
-    This prepares the image to be sent to a multimodal LLM like Gemini.
+    Processes an image file using a multimodal LLM to generate a detailed
+    description and a concise alt text.
 
     Args:
         file_path: The absolute path to the image file.
 
     Returns:
-        A list containing a dictionary that represents the image data
-        in the format expected by the Gemini API.
+        A dictionary containing the 'description' and 'alt_text'.
     """
-    # Get the image format (e.g., 'png', 'jpeg') from the file extension
-    image_format = file_path.split('.')[-1]
-    if image_format == 'jpg':
-        image_format = 'jpeg'
+    img = PIL.Image.open(file_path)
+    model = genai.GenerativeModel('models/gemini-2.5-flash-image')
 
-    # Read the image file in binary mode
-    with open(file_path, "rb") as image_file:
-        # Encode the binary data into base64
-        encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
+    # Generate the detailed description
+    response_description = model.generate_content(
+        ["Δώσε μια λεπτομερή περιγραφή αυτής της εικόνας, κατάλληλη για την παρουσίαση ενός έργου.", img],
+        stream=True
+    )
+    response_description.resolve()
 
-    # Structure the data for the Gemini API
-    image_data = [
-        {
-            "inline_data": {
-                "mime_type": f"image/{image_format}",
-                "data": encoded_string
-            }
-        }
-    ]
+    # Generate the concise alt text
+    response_alt = model.generate_content(
+        ["Δώσε ένα σύντομο, περιγραφικό alt text για αυτή την εικόνα, μέχρι 125 χαρακτήρες.", img],
+        stream=True
+    )
+    response_alt.resolve()
 
-    return image_data
+    return {
+        "description": response_description.text,
+        "alt_text": response_alt.text
+    }

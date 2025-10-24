@@ -16,9 +16,10 @@
         *   **PDF:** `PyMuPDF` ή `pypdf`.
         *   **Word (.docx):** `python-docx`.
         *   **Excel (.xlsx):** `openpyxl`.
+        *   **CSV (.csv):** Ενσωματωμένη βιβλιοθήκη `csv` της Python.
         *   **PowerPoint (.pptx):** `python-pptx`.
         *   **Εικόνες:** Ανάλυση μέσω του Gemini API.
-        *   **Σχέδια (.dwg):** Αρχική προσέγγιση μέσω εξαγωγής σε PDF/εικόνα από τον χρήστη.
+        *   **Σχέδια (.dwg):** Μετατροπή σε αρχείο εικόνας `.png` μέσω της βιβλιοθήκης `ezdxf` με backend `matplotlib` και στη συνέχεια ανάλυση της εικόνας μέσω του Gemini API.
 
 3.  **Frontend:**
     *   **Τεχνολογίες:** HTML, CSS, και Vanilla JavaScript. Το αρχείο `index.html` θα σερβίρεται απευθείας από το FastAPI.

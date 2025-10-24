@@ -6,3 +6,5 @@ pymupdf
 python-docx
 openpyxl
 python-pptx
+ezdxf 
+matplotlib 

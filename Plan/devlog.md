@@ -58,3 +58,19 @@ This log tracks the development process of the Epirus Showcase Agent. The agent 
     - Installed `python-pptx` and added it to `requirements.txt`.
     - Integrated the new processor into `main.py`.
 - **Next Step:** Continue with frontend development.
+
+## 2025-10-24
+
+- **Action:** Extended file processing capabilities to include CSV and DWG formats.
+- **Details:**
+    - **CSV Support:**
+        - Updated `Plan/prd.txt` and `Plan/tech_stack.txt` to include `.csv` as a supported spreadsheet format.
+        - Modified `src/processors/spreadsheet_processor.py` to handle `.csv` files, converting their content directly into Markdown tables for better presentation.
+        - Updated `main.py` to recognize and delegate `.csv` files to the spreadsheet processor.
+    - **DWG (AutoCAD) Support:**
+        - Implemented a strategy to convert `.dwg` files into `.png` images for visual analysis.
+        - Added `ezdxf` and `matplotlib` to `requirements.txt` to handle the conversion.
+        - Created a new processor, `src/processors/dwg_processor.py`, dedicated to this conversion task.
+        - Integrated the DWG processor into `main.py`, which now orchestrates the conversion and then passes the resulting image to the existing image processor for analysis.
+        - Added logic for temporary file management and cleanup.
+- **Next Step:** Begin development of the frontend user interface.

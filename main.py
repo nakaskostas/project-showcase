@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from pydantic import BaseModel
 
 from src import processors
+import shutil
 
 # Load environment variables from .env file
 load_dotenv()
@@ -141,10 +142,10 @@ def generate_summary_with_gemini(content: str, image_parts: list, output_folder:
     model = genai.GenerativeModel('models/gemini-2.5-flash-image')
 
     # Combine text and image parts for the prompt
-    prompt_parts = [f"""Based on the following text and images extracted from various project documents, 
+    prompt_parts = [f"""Based on the following text and visual information analysis extracted from various project documents, 
 create a comprehensive and well-structured summary in Markdown format. 
 The summary should identify and highlight key information such as: Project Title, Budget, Timeline, Key Stakeholders, Objectives, and a general Technical Description. 
-Analyze the images to extract visual information like construction status, architectural plans, or location context.
+For the 'Visual Information Analysis' section, use the provided descriptions and alt texts for each image.
 Structure the output with clear headings and bullet points. The file should be named 'summary.md'.
 
 ---
@@ -169,14 +170,19 @@ Structure the output with clear headings and bullet points. The file should be n
         return None
 
 
-def cleanup_old_files(output_folder: str):
-    """Deletes old generated files to ensure a clean slate."""
+def cleanup_old_files(output_folder: str, temp_dwg_folder: str | None = None):
+    """Deletes old generated files and temporary folders to ensure a clean slate."""
     files_to_delete = ["summary.md", "presentation.html", "presentation.css"]
     for filename in files_to_delete:
         file_path = os.path.join(output_folder, filename)
         if os.path.exists(file_path):
             os.remove(file_path)
             print(f"Deleted old file: {file_path}")
+    
+    # Clean up the temporary folder for DWG conversions
+    if temp_dwg_folder and os.path.isdir(temp_dwg_folder):
+        shutil.rmtree(temp_dwg_folder)
+        print(f"Deleted temporary DWG conversion folder: {temp_dwg_folder}")
 
 
 def process_folder(folder_path: str) -> str | None:
@@ -192,12 +198,21 @@ def process_folder(folder_path: str) -> str | None:
 
     # Define supported extensions for each processor
     text_extensions = [".txt", ".md", ".pdf", ".docx"]
-    spreadsheet_extensions = [".xlsx"]
+    spreadsheet_extensions = [".xlsx", ".csv"]
     image_extensions = [".jpg", ".jpeg", ".png"]
     video_extensions = [".mp4", ".mov", ".avi"]
     presentation_extensions = [".pptx"]
+    dwg_extensions = [".dwg"]
+
+    image_analyses = []
+    # A temporary folder to store images converted from other formats (like DWG)
+    temp_conversion_folder = os.path.join(folder_path, "dwg_temp")
 
     for root, _, files in os.walk(folder_path):
+        # Skip the temporary folder itself to avoid processing its own output
+        if temp_conversion_folder in root:
+            continue
+
         for file in files:
             file_path = os.path.join(root, file)
             _, extension = os.path.splitext(file_path)
@@ -215,12 +230,28 @@ def process_folder(folder_path: str) -> str | None:
                 content = processors.presentation_processor.process(file_path)
                 if content:
                     all_content.append(f"--- Content from {file} ---\n{content}")
+            elif extension in dwg_extensions:
+                # Convert DWG to PNG, then process the PNG
+                png_path = processors.dwg_processor.process(file_path, temp_conversion_folder)
+                if png_path:
+                    # Now treat the generated png as a regular image
+                    image_data = processors.image_processor.process(png_path)
+                    if image_data:
+                        image_analyses.append({
+                            "filename": os.path.basename(png_path) + f" (from {file})",
+                            "description": image_data["description"],
+                            "alt_text": image_data["alt_text"]
+                        })
             elif extension in image_extensions:
                 image_data = processors.image_processor.process(file_path)
                 if image_data:
-                    image_parts.append(f"--- Image from {file} ---")
-                    image_parts.extend(image_data)
+                    image_analyses.append({
+                        "filename": file,
+                        "description": image_data["description"],
+                        "alt_text": image_data["alt_text"]
+                    })
             elif extension in video_extensions:
+                # This part remains unchanged for now
                 video_frames = processors.video_processor.process(file_path)
                 if video_frames:
                     image_parts.append(f"--- Video frames from {file} ---")
@@ -229,21 +260,37 @@ def process_folder(folder_path: str) -> str | None:
             else:
                 print(f"Skipping unsupported file type: {file_path}")
 
-    if not all_content and not image_parts:
+    if not all_content and not image_analyses and not image_parts:
         print("No supported files found in the provided folder.")
         return None
 
-    # Each image adds a text part and a data dict. Each video frame is just a data dict.
-    # The logic for counting images needs to be adjusted.
-    # Let's count the number of "---" separators to get the number of files.
-    file_marker_count = sum(1 for item in image_parts if isinstance(item, str))
-    image_count = file_marker_count - (1 if video_frames_count > 0 else 0)
-
-    print(f"Found and read {len(all_content)} text-based files, {image_count} images, and processed {video_frames_count} frames from videos.")
+    # Combine text content
     combined_content = "\n\n".join(all_content)
 
+    # Combine image analysis into a text block for the prompt
+    visual_summary = ""
+    if image_analyses:
+        visual_summary += "\n\n--- Visual Information Analysis ---\n"
+        for item in image_analyses:
+            visual_summary += f"\n### Image: {item['filename']}\n"
+            visual_summary += f"**Alt Text:** {item['alt_text']}\n"
+            visual_summary += f"**Detailed Description:** {item['description']}\n"
+
+    # The final content to be sent to the summarizer model
+    full_summary_content = combined_content + visual_summary
+
+    print(f"Found and read {len(all_content)} text-based files, {len(image_analyses)} images, and processed {video_frames_count} frames from videos.")
+
     output_folder = "frontend"
-    return generate_summary_with_gemini(combined_content, image_parts, output_folder)
+    # We pass the combined text and any video frames to the generator
+    presentation_path = generate_summary_with_gemini(full_summary_content, image_parts, output_folder)
+
+    # Clean up the temporary folder for DWG conversions after processing is complete
+    if os.path.exists(temp_conversion_folder):
+        shutil.rmtree(temp_conversion_folder)
+        print(f"Cleaned up temporary DWG folder: {temp_conversion_folder}")
+        
+    return presentation_path
 
 
 @app.post("/create-presentation")
