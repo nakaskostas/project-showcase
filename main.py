@@ -139,7 +139,16 @@ def generate_summary_with_gemini(content: str, image_parts: list, output_folder:
     Returns the path to the generated HTML file.
     """
     print("Sending content and images to Gemini for summarization...")
-    model = genai.GenerativeModel('models/gemini-2.5-flash-image')
+
+    # Dynamically select the model based on whether there are images
+    if image_parts:
+        model_name = 'models/gemini-2.5-flash-image'
+        print("Image data found. Using multimodal model.")
+    else:
+        model_name = 'models/gemini-2.5-pro'
+        print("No image data found. Using text model.")
+        
+    model = genai.GenerativeModel(model_name)
 
     # Combine text and image parts for the prompt
     prompt_parts = [f"""Based on the following text and visual information analysis extracted from various project documents, 

@@ -1,83 +1,61 @@
 ```markdown
-# Project Summary
+# Project Summary: Wastewater Management Works in Preveza & Parga
 
 ## Project Title
-*   **Building Documentation** (from BUILDINGDOCUMENTATIONvolumeI.pdf)
-*   **Ανάπλαση Κεντρικής Πλατείας Αστυπάλαιας** (Regeneration of Astypalaia Central Square) (from info.docx and pdf1.pdf)
 
-## Budget
-*   **2.450.000 €** (with VAT) (from info.docx and pdf1.pdf)
-    *   **Note:** Request for budget revision of 38.400 € due to increased recycled plastic prices (from info.docx).
+*   **Main Project:** "Wastewater collection, transport, treatment, and disposal works for the former Municipality of Zalongo (now Municipality of Preveza) and the settlements of Loutsa & Loutsa beach, Municipality of Parga, Region of Epirus".
+*   **Sub-project in focus:** "Construction of sewerage pipelines (collection, transport, and disposal networks) and wastewater pumping stations within the Municipality of Preveza".
+
+## Budget & Funding
+
+*   **Total Project Budget:** €26,700,000.00
+*   **Contract Value (Sub-project):** €10,807,822.75 (excluding VAT)
+*   **Funding Source:**
+    *   Operational Programme "Epirus 2014-2020" (MIS Code: 5000123).
+    *   Co-financed at 95.79% by the European Regional Development Fund (ERDF).
+*   **Beneficiary Contribution:** The Municipality of Preveza contributes €1,122,000.00 to cover the cost of private connections.
 
 ## Timeline
-*   **Start Date:** 11 March 2024 (from info.docx and pdf1.pdf)
-*   **Contractual End Date:** 31 July 2025 (from info.docx and pdf1.pdf)
-*   **Current Status:** 35% completion (as of 26 June 2025) (from info.docx and pdf1.pdf)
-    *   **Delays Encountered:**
-        *   15-day delay due to archaeological find (Roman aqueduct) on 17/4/25 (from info.docx).
-        *   Supply issues with Paros stone slabs due to quarry strike (May 2025), seeking approval for alternative supplier from Kavala (+8% cost) (from info.docx).
+
+*   **Contract Signature Date:** February 2, 2018
+*   **Initial Duration:** 40 months
+*   **Original Completion Date:** June 1, 2021
+*   **Approved Extended Completion Date:** December 31, 2021
 
 ## Key Stakeholders
-*   **Implementing Body:** Δήμος Αστυπάλαιας (Municipality of Astypalaia) (from info.docx and pdf1.pdf)
-*   **Contractor:** «Τεχνική Ένωση Αιγαίου Α.Ε.» (Aegean Technical Union S.A.) (from info.docx and pdf1.pdf)
-*   **Funding:** ΕΣΠΑ 2014-2020 (ESPA 2014-2020), Περιφέρεια Νοτίου Αιγαίου (South Aegean Region) (from info.docx and pdf1.pdf)
-*   **Project Team (Astypalaia Project - Fictional):** (from info.docx)
-    *   Project Manager – Civil Engineer: Alkiviadis Revelakis
-    *   Landscape Architect: Dr. Lida Korasidi
-    *   Electrical Engineer: Nikolaos Serifis
-    *   Safety Consultant: Anna-Maria Kloni
-    *   Supervising Officer (Municipality): Efstratios Galanakis
 
-*   **Design Innovation and Craft Resource Centre (DICRC), CEPT University, Ahmedabad, India** (for Building Documentation Project) (from BUILDINGDOCUMENTATIONvolumeI.pdf)
-    *   **Funded by:** Government of Gujarat, iNDEXT-c
+*   **Contracting Authority:** Region of Epirus (Περιφέρεια Ηπείρου)
+*   **Project Owner / Beneficiary:** Municipality of Preveza (Δήμος Πρέβεζας)
+*   **Contractor:** ΕΡΓΟΔΥΝΑΜΙΚΗ ΠΑΤΡΩΝ Α.Τ.Ε.
+*   **Managing Authority:** Special Management Service of the O.P. of the Region of Epirus
 
-## Objectives
+## Objectives & Technical Description
 
-### Astypalaia Central Square Regeneration Project
-*   Upgrade the image of the city (from pdf1.pdf)
-*   Improve accessibility for people with disabilities (from pdf1.pdf)
+The primary objective of this project is to construct a comprehensive wastewater management system within the boundaries of the Municipality of Preveza. The scope of work includes:
 
-### Building Documentation Project (DICRC)
-*   Record, categorize, and disseminate information through graphical tools for Traditional and Vernacular Buildings and their elements (from BUILDINGDOCUMENTATIONvolumeI.pdf)
-*   Create a comprehensive data bank about various Buildings, Interior Architecture elements, Furniture, Objects and Accessories, Space Making Crafts (SMC) and Surface Narrative Crafts (SNC) related to Traditional and Vernacular Buildings of India (from BUILDINGDOCUMENTATIONvolumeI.pdf)
-*   Provide valuable educational data to students, craftspeople, educators, design professionals, conservationists, and those in Art, Craft, Design, and Architecture (from BUILDINGDOCUMENTATIONvolumeI.pdf)
-*   Generate awareness regarding traditional and vernacular buildings and crafts of India (through Building Interactive Kit) (from BUILDINGDOCUMENTATIONvolumeI.pdf)
-*   Bring embedded knowledge about Indian Traditional and Vernacular Architecture and Craft back to education (from BUILDINGDOCUMENTATIONvolumeI.pdf)
+*   **Sewerage Network:** Construction of pipelines for the collection, transport, and disposal of wastewater.
+*   **Pumping Stations:** Construction of multiple pumping stations designed to transport sewage under pressure to the site of a new biological treatment plant currently under construction.
 
-## General Technical Description
+## Project Status & Timeline Extension
 
-### Astypalaia Central Square Regeneration Project
-*   Demolition of existing paving (6,200 m²) (100% complete) (from info.docx)
-*   New underground stormwater drainage infrastructure (HDPE pipes Ø300 mm, 480 m) (60% complete) (from info.docx)
-*   Underground electrical lighting network – 28 LED 60 W connection points (0% complete) (from info.docx)
-*   Urban equipment: 45 benches (70% recycled plastic), 12 waste bins, 6 braille signs for people with disabilities (from info.docx)
-*   Planting of 42 trees (oleanders, tamarisks) and 380 shrubs in special drainage zones (0% complete) (from info.docx)
-*   New paving with chisel-cut Paros stone slabs (7 cm thick, R11 anti-slip rating) (0% complete) (from info.docx)
-*   Excavation – gravel layer (80% complete for 1,450 m³) (from info.docx)
-*   Underground networks for DEI-OTE (1,180m, 0% complete) (from info.docx)
+*   **Progress:** As of late May 2021, approximately 90% of the project work had been completed.
+*   **Timeline Extension:** A formal request for a deadline extension was submitted by the contractor and officially approved by the Economic Committee of the Region of Epirus on June 11, 2021.
+*   **Reasons for Extension:** The delay was deemed not to be the contractor's fault and was attributed to two main factors:
+    1.  **Administrative Delays:** A significant delay in receiving approval for the necessary relocation of a critical pumping station (AB11) in the Kastrosykia area.
+    2.  **COVID-19 Pandemic:** The global pandemic caused major disruptions, including significant delays in the procurement and delivery of materials, as well as difficulties in the movement of work crews and personnel from March 2020 onwards.
 
-### Building Documentation Project (DICRC)
-*   **Focus:** Domestic architecture including local houses, palaces, havelis, bunglows, and buildings of religious importance, public, and commercial buildings that showcase high points in building crafts and varied construction techniques using wood, stone, and earth. (from BUILDINGDOCUMENTATIONvolumeI.pdf)
-*   **Documentation Categories:**
-    *   Traditional and Vernacular Buildings
-    *   Interior Architecture Elements (walls, floor, ceiling, roof, doors, windows, stairs, balconies, brackets, columns, parapets, entablatures)
-    *   Furniture (bed, table, storage, chair, sofa, bench, stool, partition, swing)
-    *   Objects and Accessories (carpets, light fixtures, frames, hardware)
-*   **Methodology (Modus Operandi):**
-    1.  **Primary Research:** Gathering existing records (drawings, photographs, literary accounts, historical documents) from archives, municipalities, institutions, museums, libraries, or private collections. (from BUILDINGDOCUMENTATIONvolumeI.pdf)
-    2.  **Primary Field Visit:** Reconnaissance survey, collecting information on building name, location, typology, construction techniques, relevant images, and maintaining a field trip diary. (from BUILDINGDOCUMENTATIONvolumeI.pdf)
-    3.  **Field Work:**
-        *   **Field Drawings:** Detailed information on construction methodology, dimensions, and field notes, obtained through on-field measurements and historic documents. (from BUILDINGDOCUMENTATIONvolumeI.pdf)
-        *   **Photography:** Capturing context (streets, surroundings), spaces (internal), elevations, elements, details, interior architecture, furniture, objects, and accessories. (from BUILDINGDOCUMENTATIONvolumeI.pdf)
-        *   **Discussions:** Exploring history of houses and families, construction details, space usage changes, local rituals, practices, belief systems, myths, folklores, living/eating habits. (from BUILDINGDOCUMENTATIONvolumeI.pdf)
-    4.  **Post Fieldwork:**
-        *   **Data Cataloguing and Digitization:** Compiling and digitizing drawings (architectural, interior architecture, furniture) and photographs systematically, including interviews. Converting field data into vector-based 2D, 3D, and exploded drawings. (from BUILDINGDOCUMENTATIONvolumeI.pdf)
-        *   **Preparation of Technical Drawings:** Creating site plans, floor plans, elevations, sections, and detailed drawings of construction techniques, interior, and furniture elements, including isometrics and exploded views. (from BUILDINGDOCUMENTATIONvolumeI.pdf)
-        *   **Research and Analysis:** Analyzing documented data to interpret elements and associated Space Making Crafts (SMCs) and Surface Narrative Crafts (SNCs). (from BUILDINGDOCUMENTATIONvolumeI.pdf)
-    5.  **Dissemination:** Through Traditional Building Portfolios (vector-based drawings), Building Element Manuals (detailed analysis of elements), Building Interactive Kits (online educational application with virtual tours and 3D models), TVB Lab (interactive drawing plate collection), Building Map (online map of documented houses), Fieldwork Reports, Publications (books, panels), Media (website, audio/video clips, 360-degree panoramas), and Exhibitions. (from BUILDINGDOCUMENTATIONvolumeI.pdf)
+---
 
 ## Visual Information Analysis
 
+*Note: The following visual information appears to be unrelated to the public infrastructure project described above.*
+
 ### Image: img.jpg
-This image effectively illustrates the transition from an architectural concept to a realized structure. It showcases a modern house design evolving from a detailed, linear architectural sketch on the left into a fully rendered, photorealistic 3D visualization on the right. The sketch highlights the geometric forms and structural ideas with crisp white lines against a light background. As the image progresses to the right, the house gains substance with smooth white facades, large glass panels, and dark architectural accents that add depth. The exterior includes a wooden deck leading to a reflective water feature, surrounded by landscaped greenery, including lawns and trees. A clear blue sky with a few clouds and a distant propeller plane completes the scene, conveying a sense of contemporary luxury and the complete lifecycle of an architectural project from design to detailed visualization.
+
+*   **Alt Text:** A design of a modern, luxurious residence, with one half completed as a realistic render and the other half remaining a linear sketch.
+*   **Description:** The image showcases the architectural process, transitioning from a concept to a finished product.
+    *   On the left, it presents a clean, precise architectural blueprint of a luxurious home.
+    *   This blueprint smoothly transforms into a photorealistic, 3D rendering of the same house on the right.
+    *   The rendered portion features white walls, large glass windows, and a modern aesthetic. Key details include a crystal-clear swimming pool, a wooden walkway, and landscaped greenery, creating a scene of tranquil luxury.
+    *   The image effectively visualizes the journey of an architectural design from the drawing board to its final, tangible form.
 ```
