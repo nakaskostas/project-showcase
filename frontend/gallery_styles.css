@@ -1,0 +1,73 @@
+/* 
+Custom styles to override SimpleLightbox and create a side-panel caption.
+*/
+
+/* 1. Main Wrapper - Use Flexbox for side-by-side layout */
+.sl-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 2. Image Container - Make it take up most of the space */
+.sl-image {
+    flex: 1 1 70%; /* Grow, shrink, and take 70% of the base width */
+    padding: 20px;
+}
+
+/* 3. Caption - Style it as a side panel / comic bubble */
+.sl-caption {
+    /* Positioning and Sizing */
+    position: relative; /* No longer absolute */
+    flex: 1 1 30%; /* Take up the remaining 30% */
+    max-width: 350px;
+    height: auto;
+    margin: 20px;
+    padding: 25px;
+
+    /* "Comic Bubble" Styling */
+    background: #f2f2f2;
+    color: #333;
+    border-radius: 10px;
+    font-size: 1rem;
+    line-height: 1.5;
+    text-align: left;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+
+    /* Animation */
+    opacity: 0;
+    transform: translateX(20px);
+    transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+    transition-delay: 0.2s; /* Wait for the image to fade in first */
+}
+
+/* 4. The "Tail" of the bubble using a pseudo-element */
+.sl-caption::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -20px; /* Position it on the left edge */
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+    border-right: 20px solid #f2f2f2; /* This creates the triangle */
+}
+
+
+/* 5. Trigger the animation when the lightbox is open */
+.sl-wrapper.sl-open .sl-caption {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Ensure the caption is hidden on small screens to not clutter the UI */
+@media (max-width: 768px) {
+    .sl-caption {
+        display: none;
+    }
+    .sl-image {
+        flex-basis: 100%; /* Image takes full width */
+    }
+}

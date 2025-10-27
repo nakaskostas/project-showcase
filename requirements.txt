@@ -6,5 +6,9 @@ pymupdf
 python-docx
 openpyxl
 python-pptx
-ezdxf 
-matplotlib 
+ezdxf
+matplotlib
+pywin32
+xlrd
+rarfile
+ 

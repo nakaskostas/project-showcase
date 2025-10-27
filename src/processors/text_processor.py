@@ -2,6 +2,9 @@ import os
 import fitz  # PyMuPDF
 import docx
 
+# Import the new doc processor function
+from .doc_processor import process_doc
+
 def _read_txt_or_md(file_path: str) -> str:
     """Reads a .txt or .md file."""
     with open(file_path, "r", encoding="utf-8") as f:
@@ -38,11 +41,13 @@ def process(file_path: str) -> str:
     _, extension = os.path.splitext(file_path)
     extension = extension.lower()
 
-    if extension in [".txt", ".md"]:
+    if extension in [".txt", ".md", ".xml"]:
         return _read_txt_or_md(file_path)
     elif extension == ".pdf":
         return _read_pdf(file_path)
     elif extension == ".docx":
         return _read_docx(file_path)
+    elif extension == ".doc":
+        return process_doc(file_path)
     
     return ""

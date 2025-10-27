@@ -1,6 +1,25 @@
 import openpyxl
 import csv
 import os
+import xlrd
+
+def _process_xls(file_path: str) -> str:
+    """
+    Processes a legacy .xls file using xlrd and extracts its content as text.
+    """
+    try:
+        workbook = xlrd.open_workbook(file_path)
+        text_content = []
+        for sheet in workbook.sheets():
+            text_content.append(f"--- Sheet: {sheet.name} ---")
+            for row_idx in range(sheet.nrows):
+                row = sheet.row(row_idx)
+                row_values = [str(cell.value) if cell.value is not None else "" for cell in row]
+                text_content.append("\t".join(row_values))
+        return "\n".join(text_content)
+    except Exception as e:
+        print(f"Error reading XLS {file_path}: {e}")
+        return ""
 
 def _process_xlsx(file_path: str) -> str:
     """
@@ -47,13 +66,16 @@ def _process_csv(file_path: str) -> str:
 
 def process(file_path: str) -> str:
     """
-    Processes a spreadsheet file (.xlsx or .csv) based on its extension.
+    Processes a spreadsheet file (.xlsx, .xls, or .csv) based on its extension.
     """
     _, extension = os.path.splitext(file_path)
+    extension = extension.lower()
     
-    if extension.lower() == '.xlsx':
+    if extension == '.xlsx':
         return _process_xlsx(file_path)
-    elif extension.lower() == '.csv':
+    elif extension == '.xls':
+        return _process_xls(file_path)
+    elif extension == '.csv':
         return _process_csv(file_path)
     else:
         print(f"Unsupported spreadsheet format: {extension}")
